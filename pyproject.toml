@@ -39,7 +39,7 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com"
+Homepage = "https://github.com/wjk376/scijob-sdk-python"
 
 [tool.hatch.version]
 path = "scijob/__version__.py"
