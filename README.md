@@ -20,8 +20,6 @@ from scijob import AsyncClient
 cli = AsyncClient(api_key="your api key", api_base_url="your api base url")
 ```
 
-Following examples are formulated using the sync client.
-
 ### Register Functions
 
 You may register a new function which sources from GitLab and with VolcEngine specifications as below:
@@ -31,7 +29,7 @@ from scijob.requests import *
 
 resp = cli.register_function(
     request=RegisterFunctionRequestBuilder()
-        .identity(...)
+        .identity(key="func_key", name="some_func", module="some_module", version="0.0.1")
         .description("This is a test function...")
         .repo_source("gitlab")
         .gitlab_repo_info(...)
@@ -48,4 +46,20 @@ resp = cli.register_function(
 )
 print(resp.function_id)
 #> 6a1b48027b0e2e9c9d3ad8c7
+```
+
+### Call Functions
+
+Below shows an example of calling a registered function by its ID, using with statements:
+
+```python
+async with AsyncClient(api_key="your api key", api_base_url="your api base url") as cli:
+    job = await cli.call_function(
+        request=CallFunctionRequestBuilder()
+            .function_id("6a1b48027b0e2e9c9d3ad8c7")
+            .function_args(...)
+            .backend("volcengine_ml_platform")
+            .build()
+    )
+    res = await job.get_result()
 ```
